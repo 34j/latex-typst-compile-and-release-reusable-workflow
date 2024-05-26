@@ -2,14 +2,19 @@ name: Build LaTeX/Typst document and Create Release
 on:
   workflow_call:
     inputs:
-      parallel:
+      cluttex_parallel:
         description: "Whether to compile LaTeX documents using GNU parallel"
         default: true
         type: boolean
         required: false
       cluttex:
-        description: "Whether to compile LaTeX documents using ClutTex instead of LaTeXmk"
-        default: true
+        description: "Whether to compile LaTeX documents using ClutTex"
+        default: false
+        type: boolean
+        required: false
+      latexmk:
+        description: "Whether to compile LaTeX documents using LaTeXmk"
+        default: false
         type: boolean
         required: false
       typst:
@@ -40,7 +45,7 @@ jobs:
       - name: Set up Git repository
         uses: actions/checkout@v4
       - name: Compile LaTeX document (LaTeXmk)
-        if: ${{ !inputs.cluttex }}
+        if: ${{ inputs.latexmk }}
         uses: xu-cheng/latex-action@v3
         with:
           root_file: "**/*.tex"
@@ -48,13 +53,13 @@ jobs:
       # runs on docker image
       # clutex: https://github.com/minoki/cluttex
       - name: Compile LaTeX document (ClutTex)
-        if: ${{ inputs.cluttex && !inputs.parallel }}
+        if: ${{ inputs.cluttex && !inputs.cluttex_parallel }}
         uses: xu-cheng/texlive-action@v2
         with:
           scheme: full
           run: find . -name "*.tex" -exec sh -c 'cd $(dirname {}) && cluttex --no-halt-on-error --no-file-line-error -e xelatex $(basename {})' \;
       - name: Compile LaTeX document (ClutTex with GNU parallel)
-        if: ${{ inputs.cluttex && inputs.parallel }}
+        if: ${{ inputs.cluttex_parallel }}
         uses: xu-cheng/texlive-action@v2
         with:
           scheme: full
@@ -71,7 +76,7 @@ jobs:
         uses: ammar-ahmed22/compile-typst-action@v1
         with:
           source_paths: ${{ steps.search_typ_files.outputs.typ_files }}
-      - name: Upload PDF file
+      - name: Upload (Artifact)
         if: ${{ inputs.upload_artifact }}
         uses: actions/upload-artifact@v4
         with:
@@ -80,7 +85,7 @@ jobs:
       - name: Set up Git user
         if: ${{ inputs.upload_release }}
         uses: fregante/setup-git-user@v2
-      - name: Create Release
+      - name: Upload (Release)
         if: ${{ inputs.upload_release }}
         run: |
           # specifying filenames in `gh release create` didn't work
