@@ -28,7 +28,7 @@ on:
         required: false
 
 jobs:
-  build_latex:
+  main:
     name: Build LaTeX/Typst document and Create Release
     runs-on: ubuntu-latest
     steps:

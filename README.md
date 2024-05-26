@@ -13,7 +13,7 @@ on:
 
 jobs:
   release:
-    uses: 34j/latex-typst-compile-and-release-reusable-workflow/.github/workflows/release.yml@main
+    uses: 34j/latex-typst-compile-and-release-reusable-workflow/.github/workflows/release.yaml@main
     secrets:
       github_token: ${{ secrets.GITHUB_TOKEN }}
 ```
