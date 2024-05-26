@@ -1,4 +1,3 @@
-
 # Reusable GitHub Actions Workflow for Building LaTeX/Typst Document and Creating Release
 
 ## Usage

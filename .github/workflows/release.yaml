@@ -2,31 +2,31 @@ name: Build LaTeX/Typst document and Create Release
 on:
   workflow_call:
     inputs:
-      parallel: 
-        description: 'Whether to compile LaTeX documents using GNU parallel'
+      parallel:
+        description: "Whether to compile LaTeX documents using GNU parallel"
         default: true
         type: boolean
       cluttex:
-        description: 'Whether to compile LaTeX documents using ClutTex instead of LaTeXmk'
+        description: "Whether to compile LaTeX documents using ClutTex instead of LaTeXmk"
         default: true
         type: boolean
       typst:
-        description: 'Whether to compile Typst files'
+        description: "Whether to compile Typst files"
         default: true
         type: boolean
       upload_artifact:
-        description: 'Whether to upload PDF files as artifacts'
+        description: "Whether to upload PDF files as artifacts"
         default: true
         type: boolean
       upload_release:
-        description: 'Whether to create a release'
+        description: "Whether to create a release"
         default: true
         type: boolean
     secrets:
       github_token:
-        description: 'GitHub Personal Access Token for creating releases'
+        description: "GitHub Personal Access Token for creating releases"
         required: false
-  
+
 jobs:
   build_latex:
     name: Build LaTeX/Typst document and Create Release
@@ -78,7 +78,7 @@ jobs:
       - name: Create Release
         if: ${{ github.event.inputs.upload_release }}
         run: |
-          # specifing filenames in `gh release create` didn't work
+          # specifying filenames in `gh release create` didn't work
           gh release create v${{ github.run_number }} --title "Release v${{ github.run_number }}" --notes "Release v${{ github.run_number }}"
           find . -name "*.pdf" -type f -exec gh release upload v${{ github.run_number }} {} --clobber \;
         env:
