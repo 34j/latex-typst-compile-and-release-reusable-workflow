@@ -6,22 +6,27 @@ on:
         description: "Whether to compile LaTeX documents using GNU parallel"
         default: true
         type: boolean
+        required: false
       cluttex:
         description: "Whether to compile LaTeX documents using ClutTex instead of LaTeXmk"
         default: true
         type: boolean
+        required: false
       typst:
         description: "Whether to compile Typst files"
         default: true
         type: boolean
+        required: false
       upload_artifact:
         description: "Whether to upload PDF files as artifacts"
         default: true
         type: boolean
+        required: false
       upload_release:
         description: "Whether to create a release"
         default: true
         type: boolean
+        required: false
     secrets:
       github_token:
         description: "GitHub Personal Access Token for creating releases"
