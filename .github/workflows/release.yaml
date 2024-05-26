@@ -27,6 +27,10 @@ on:
         default: true
         type: boolean
         required: false
+    secrets:
+      gh_pat:
+        description: "GitHub Personal Access Token for creating releases"
+        required: false
 
 jobs:
   main:
@@ -83,4 +87,4 @@ jobs:
           gh release create v${{ github.run_number }} --title "Release v${{ github.run_number }}" --notes "Release v${{ github.run_number }}"
           find . -name "*.pdf" -type f -exec gh release upload v${{ github.run_number }} {} --clobber \;
         env:
-          GITHUB_TOKEN: ${{ secrets.github_token }}
+          GITHUB_TOKEN: ${{ secrets.gh_pat }}

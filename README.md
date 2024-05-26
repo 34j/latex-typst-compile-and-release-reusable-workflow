@@ -15,5 +15,5 @@ jobs:
   release:
     uses: 34j/latex-typst-compile-and-release-reusable-workflow/.github/workflows/release.yaml@main
     secrets:
-      github_token: ${{ secrets.GITHUB_TOKEN }}
+      gh_pat: ${{ secrets.GITHUB_TOKEN }}
 ```
