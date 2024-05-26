@@ -27,10 +27,6 @@ on:
         default: true
         type: boolean
         required: false
-    secrets:
-      github_token:
-        description: "GitHub Personal Access Token for creating releases"
-        required: false
 
 jobs:
   main:
