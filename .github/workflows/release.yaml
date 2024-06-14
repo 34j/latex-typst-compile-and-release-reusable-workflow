@@ -67,26 +67,26 @@ jobs:
             apk add parallel
             find . -name "*.tex" | parallel "cd $(dirname {}) && cluttex --no-halt-on-error --no-file-line-error -e xelatex $(basename {})"
       - name: Search all .typ files recursively and output as space separated string
-        if: ${{ inputs.typst }}
+        if: (success() || failure()) && ${{ inputs.typst }}
         id: search_typ_files
         run: |
           echo "typ_files=$(find . -name '*.typ' -type f | tr '\n' ' ')" >> $GITHUB_OUTPUT
       - name: Compile Typst Files
-        if: ${{ inputs.typst }}
+        if: (success() || failure()) && ${{ inputs.typst }}
         uses: ammar-ahmed22/compile-typst-action@v1
         with:
           source_paths: ${{ steps.search_typ_files.outputs.typ_files }}
       - name: Upload (Artifact)
-        if: ${{ inputs.upload_artifact }}
+        if: (success() || failure()) && ${{ inputs.upload_artifact }}
         uses: actions/upload-artifact@v4
         with:
           name: PDF
           path: "**/*.pdf"
       - name: Set up Git user
-        if: ${{ inputs.upload_release }}
+        if: (success() || failure()) && ${{ inputs.upload_release }}
         uses: fregante/setup-git-user@v2
       - name: Upload (Release)
-        if: ${{ inputs.upload_release }}
+        if: (success() || failure()) && ${{ inputs.upload_release }}
         run: |
           # specifying filenames in `gh release create` didn't work
           gh release create v${{ github.run_number }} --title "Release v${{ github.run_number }}" --notes "Release v${{ github.run_number }}"
