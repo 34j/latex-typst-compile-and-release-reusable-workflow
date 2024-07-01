@@ -78,10 +78,16 @@ jobs:
           source_paths: ${{ steps.search_typ_files.outputs.typ_files }}
       - name: Upload (Artifact)
         if: (success() || failure()) && ${{ inputs.upload_artifact }}
+        id: upload-artifact
         uses: actions/upload-artifact@v4
         with:
           name: PDF
           path: "**/*.pdf"
+      - name: Comment artifact link
+        if: (success() || failure()) && ${{ inputs.upload_artifact }}
+        id: comment-artifact
+        run: |
+          gh pr comment ${{ github.ref }} -b --edit-last "PDF artifacts are available [here](${{ steps.upload-artifact.outputs.artifact-url }})."
       - name: Set up Git user
         if: (success() || failure()) && ${{ inputs.upload_release }}
         uses: fregante/setup-git-user@v2
