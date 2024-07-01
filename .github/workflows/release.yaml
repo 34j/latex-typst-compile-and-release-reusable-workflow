@@ -87,7 +87,7 @@ jobs:
         if: (success() || failure()) && ${{ inputs.upload_artifact }}
         id: comment-artifact
         run: |
-          gh pr comment ${{ github.ref }} -b --edit-last "PDF artifacts are available [here](${{ steps.upload-artifact.outputs.artifact-url }})."
+          gh pr comment "${{ github.ref }}" --edit-last -b "PDF artifacts are available [here](${{ steps.upload-artifact.outputs.artifact-url }})."
       - name: Set up Git user
         if: (success() || failure()) && ${{ inputs.upload_release }}
         uses: fregante/setup-git-user@v2
