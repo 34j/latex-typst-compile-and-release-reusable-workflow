@@ -1,5 +1,12 @@
 # Reusable GitHub Actions Workflow for Building LaTeX/Typst Document and Creating Release
 
+## Features
+
+- Support both LaTeX ([LaTeXmk][latexmk] or [Cluttex][cluttex]) and [Typst][typst]
+- Install custom fonts from [Google Fonts][google-fonts]
+- Comment the link to the Compiled PDF file in the Pull Request
+- Automatically create a release with the compiled PDF file attached
+
 ## Usage
 
 1. Set `Settings/Actions/General/Workflow Permissions` to `Read and write permissions`
@@ -41,7 +48,13 @@ jobs:
       latexmk: false
       typst: true
       upload_artifact: true
-      upload_release: ${{ github.event_name == 'push' }}
+      upload_release: true
+      fonts: '"Roboto" "Noto Sans" "Noto Serif"' # Google Fonts
     secrets:
       gh_pat: ${{ secrets.GITHUB_TOKEN }}
 ```
+
+[latexmk]: https://ctan.org/pkg/latexmk
+[cluttex]: https://ctan.org/pkg/cluttex
+[typst]: https://github.com/typst/typst
+[google-fonts]: https://fonts.google.com/
