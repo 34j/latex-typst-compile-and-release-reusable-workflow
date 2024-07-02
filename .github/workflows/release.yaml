@@ -33,7 +33,7 @@ on:
         type: boolean
         required: false
       fonts:
-        description: "Additional fonts to install"
+        description: "Additional Google Fonts to install"
         default: ""
         type: string
         required: false
@@ -58,7 +58,8 @@ jobs:
       - name: Install additional fonts
         if: ${{ inputs.fonts }}
         run: |
-          sudo apt install ${{ inputs.fonts }} -y
+          pipx install "git+https://github.com/nureon22/gfont.git"
+          gfont install ${{ inputs.fonts }} -y
       # runs on docker image
       # clutex: https://github.com/minoki/cluttex
       - name: Compile LaTeX document (ClutTex)
