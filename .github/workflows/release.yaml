@@ -32,6 +32,11 @@ on:
         default: true
         type: boolean
         required: false
+      fonts:
+        description: "Additional fonts to install"
+        default: ""
+        type: string
+        required: false
     secrets:
       gh_pat:
         description: "GitHub Personal Access Token for creating releases"
@@ -50,6 +55,10 @@ jobs:
         with:
           root_file: "**/*.tex"
           latexmk_use_xelatex: true
+      - name: Install additional fonts
+        if: ${{ inputs.fonts }}
+        run: |
+          apk add $(echo ${{ inputs.fonts }} | tr ',' ' ')
       # runs on docker image
       # clutex: https://github.com/minoki/cluttex
       - name: Compile LaTeX document (ClutTex)
