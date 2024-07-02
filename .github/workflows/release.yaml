@@ -56,10 +56,13 @@ jobs:
           root_file: "**/*.tex"
           latexmk_use_xelatex: true
       - name: Install additional fonts
+        # copy fonts to current directory from ~/.local/share/fonts/gfont as well
         if: ${{ inputs.fonts }}
         run: |
           pipx install "git+https://github.com/nureon22/gfont.git"
           gfont install ${{ inputs.fonts }} -y
+          mkdir -p fonts
+          cp -r ~/.local/share/fonts/gfont fonts
       # runs on docker image
       # clutex: https://github.com/minoki/cluttex
       - name: Compile LaTeX document (ClutTex)
@@ -85,7 +88,7 @@ jobs:
         if: ${{ inputs.typst }}
         uses: ammar-ahmed22/compile-typst-action@v1
         with:
-          fonts_path: "~/.local/share/fonts/gfont"
+          fonts_path: "fonts"
           source_paths: ${{ steps.search_typ_files.outputs.typ_files }}
       - name: Upload (Artifact)
         if: ${{ inputs.upload_artifact }}
