@@ -101,7 +101,7 @@ jobs:
         if: ${{ inputs.upload_artifact }}
         id: comment-artifact
         run: |
-          gh pr comment "${{ github.head_ref || github.ref_name }}" --edit-last -b "[Compiled PDF files are available](${{ steps.upload-artifact.outputs.artifact-url }})." || gh pr comment "${{ github.head_ref || github.ref_name }}" -b "[Compiled PDF files are available](${{ steps.upload-artifact.outputs.artifact-url }})."
+          gh pr comment "${{ github.head_ref || github.ref_name }}" --edit-last -b "(Automated) [Compiled PDF files are available](${{ steps.upload-artifact.outputs.artifact-url }})." || gh pr comment "${{ github.head_ref || github.ref_name }}" -b "(Automated) [Compiled PDF files are available](${{ steps.upload-artifact.outputs.artifact-url }})."
         env:
           GITHUB_TOKEN: ${{ secrets.gh_pat }}
       - name: Set up Git user
