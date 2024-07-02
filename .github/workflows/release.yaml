@@ -85,6 +85,7 @@ jobs:
         if: ${{ inputs.typst }}
         uses: ammar-ahmed22/compile-typst-action@v1
         with:
+          fonts_path: "~/.local/share/fonts/gfont"
           source_paths: ${{ steps.search_typ_files.outputs.typ_files }}
       - name: Upload (Artifact)
         if: ${{ inputs.upload_artifact }}
