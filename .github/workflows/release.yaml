@@ -58,7 +58,7 @@ jobs:
       - name: Install additional fonts
         if: ${{ inputs.fonts }}
         run: |
-          apk add $(echo ${{ inputs.fonts }} | tr ',' ' ')
+          sudo apt install ${{ inputs.fonts }} -y
       # runs on docker image
       # clutex: https://github.com/minoki/cluttex
       - name: Compile LaTeX document (ClutTex)
