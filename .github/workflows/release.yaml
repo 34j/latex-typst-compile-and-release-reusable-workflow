@@ -72,29 +72,29 @@ jobs:
         run: |
           echo "typ_files=$(find . -name '*.typ' -type f | tr '\n' ' ')" >> $GITHUB_OUTPUT
       - name: Compile Typst Files
-        if: always() && ${{ inputs.typst }}
+        if: ${{ inputs.typst }}
         uses: ammar-ahmed22/compile-typst-action@v1
         with:
           source_paths: ${{ steps.search_typ_files.outputs.typ_files }}
       - name: Upload (Artifact)
-        if: always() && ${{ inputs.upload_artifact }}
+        if: ${{ inputs.upload_artifact }}
         id: upload-artifact
         uses: actions/upload-artifact@v4
         with:
           name: PDF
           path: "**/*.pdf"
       - name: Comment artifact link
-        if: always() && ${{ inputs.upload_artifact }}
+        if: ${{ inputs.upload_artifact }}
         id: comment-artifact
         run: |
           gh pr comment "${{ github.head_ref || github.ref_name }}" --edit-last -b "[Compiled PDF files are available](${{ steps.upload-artifact.outputs.artifact-url }})." || gh pr comment "${{ github.head_ref || github.ref_name }}" -b "[Compiled PDF files are available](${{ steps.upload-artifact.outputs.artifact-url }})."
         env:
           GITHUB_TOKEN: ${{ secrets.gh_pat }}
       - name: Set up Git user
-        if: always() && ${{ inputs.upload_release }}
+        if: ${{ inputs.upload_release }}
         uses: fregante/setup-git-user@v2
       - name: Upload (Release)
-        if: always() && ${{ inputs.upload_release }}
+        if: ${{ inputs.upload_release }} && github.head_ref == github.base_ref
         run: |
           # specifying filenames in `gh release create` didn't work
           gh release create v${{ github.run_number }} --title "Release v${{ github.run_number }}" --notes "Release v${{ github.run_number }}"
