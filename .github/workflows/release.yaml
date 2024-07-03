@@ -98,7 +98,7 @@ jobs:
           name: PDF
           path: "**/*.pdf"
       - name: Comment artifact link
-        if: ${{ inputs.upload_artifact }}
+        if: ${{ inputs.upload_artifact && github.ref != 'refs/heads/main' }}
         id: comment-artifact
         run: |
           gh pr comment "${{ github.head_ref || github.ref_name }}" --edit-last -b "(Automated) [Compiled PDF files are available](${{ steps.upload-artifact.outputs.artifact-url }})." || gh pr comment "${{ github.head_ref || github.ref_name }}" -b "(Automated) [Compiled PDF files are available](${{ steps.upload-artifact.outputs.artifact-url }})."
