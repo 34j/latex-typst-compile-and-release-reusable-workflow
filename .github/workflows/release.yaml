@@ -37,6 +37,11 @@ on:
         default: ""
         type: string
         required: false
+      runs-on: # https://github.com/orgs/community/discussions/26801
+        description: "Runner to use"
+        type: string
+        default: '["ubuntu-latest"]'
+        required: false
     secrets:
       gh_pat:
         description: "GitHub Personal Access Token for creating releases"
@@ -45,7 +50,7 @@ on:
 jobs:
   main:
     name: Main
-    runs-on: ubuntu-latest
+    runs-on: ${{fromJSON(inputs.runs-on)}}
     steps:
       - name: Set up Git repository
         uses: actions/checkout@v4

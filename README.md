@@ -50,6 +50,7 @@ jobs:
       upload_artifact: true
       upload_release: true
       fonts: '"Roboto" "Noto Sans" "Noto Serif"' # Google Fonts
+      runs-on: '["self-hosted", "linux"]' # use self-hosted runner
     secrets:
       gh_pat: ${{ secrets.GITHUB_TOKEN }}
 ```
