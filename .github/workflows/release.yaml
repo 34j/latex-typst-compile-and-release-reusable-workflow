@@ -89,12 +89,20 @@ jobs:
         id: search_typ_files
         run: |
           echo "typ_files=$(find . -name '*.typ' -type f | tr '\n' ' ')" >> $GITHUB_OUTPUT
+      # - name: Compile Typst Files
+      #   if: ${{ inputs.typst }}
+      #   uses: ammar-ahmed22/compile-typst-action@v1 # broken
+      #   with:
+      #     fonts_path: "fonts"
+      #     source_paths: ${{ steps.search_typ_files.outputs.typ_files }}
+      - uses: typst-community/setup-typst@v3
+        if: ${{ inputs.typst }}
       - name: Compile Typst Files
         if: ${{ inputs.typst }}
-        uses: ammar-ahmed22/compile-typst-action@v1
-        with:
-          fonts_path: "fonts"
-          source_paths: ${{ steps.search_typ_files.outputs.typ_files }}
+        run: |
+          sudo apt install -y parallel
+          typst fonts
+          find . -name "*.typ" | parallel "typst compile {}"
       - name: Upload (Artifact)
         if: ${{ inputs.upload_artifact }}
         id: upload-artifact
