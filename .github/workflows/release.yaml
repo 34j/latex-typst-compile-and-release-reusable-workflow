@@ -102,7 +102,7 @@ jobs:
         run: |
           sudo apt install -y parallel
           typst fonts
-          find . -name "*.typ" | parallel "typst compile {}"
+          find . -name "*.typ" -type f | parallel "typst compile {}"
       - name: Upload (Artifact)
         if: ${{ inputs.upload_artifact }}
         id: upload-artifact
